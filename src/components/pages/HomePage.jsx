@@ -223,7 +223,9 @@ export default class HomePage extends Component {
       method: "POST"
     })
     .then(response => response.json())
-    .then(console.log)
+    .then(data => {
+      this.$f7.dialog.alert("Successfull!")
+    })
     .catch(err => console.log(err))
     // mt.controls = true;
     // mt.src = url;
@@ -263,7 +265,9 @@ export default class HomePage extends Component {
           <Link style={{
             color: "black",
             fontSize: "12px"
-          }} tabLink="#tab-1"><img width="35px" src={add} alt=""/></Link>
+          }} onClick={() => this.setState({
+            tooltip: true
+          })} tabLink="#tab-1"><img width="35px" src={add} alt=""/></Link>
           <Link style={{
             color: "black",
             fontSize: "12px"
@@ -281,14 +285,15 @@ export default class HomePage extends Component {
             </center>
             <div>
               <div> 
-                <a onClick={!this.state.record ? this.start : console.log("just_record")} style={{
+                {/* <Button style={{height: "300px"}} popoverOpen=".popover-menu"> */}
+                <a onClick={this.start} id="sos" style={{
                   position: "absolute", 
                   left: 0, 
                   right: 0, 
                   marginLeft: "auto",
                   marginRight: "auto",
                   width: "300px",
-              }} className="btn-sos">
+              }} className="btn-sos xuy">
                   <img style={{
                   position: "absolute", 
                   left: 0, 
@@ -298,6 +303,7 @@ export default class HomePage extends Component {
                   width: "300px",
               }} src={sos} alt=""/>
                 </a>
+                {/* </Button> */}
                 {/* <button onClick={this.stopRecording} type="button">Stop</button>
                 <ReactMic
                   style={{opacity: 0}}
@@ -322,6 +328,22 @@ export default class HomePage extends Component {
                 <img src={bird} alt=""/>
               </div>
             </div>
+            <Popover opened={this.state.tooltip} target=".xuy" className="popover-menu" style={{background: "bottom"}}>
+          <center>
+            <div style={{position: "relative"}}>
+              <img src={ebaniyEnot} width="200px" />
+              <p style={{
+                position: "absolute", 
+                zIndex: 1000000000000,
+                color: "white",
+                width: 100,
+                top: 100,
+                fontSize: "13px",
+                left: 80
+            }}>Click sos<br/> and tell about problem</p>
+            </div>
+          </center>
+        </Popover>
           </Tab>
           <Tab id="tab-2" className="page-content" tabActive>
           <Card className="demo-card-header-pic">

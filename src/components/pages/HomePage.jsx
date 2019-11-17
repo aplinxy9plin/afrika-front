@@ -57,6 +57,8 @@ export default class HomePage extends Component {
 
   componentDidMount() {
 
+    var self = this;
+
     var options = {
       enableHighAccuracy: true,
       timeout: 5000,
@@ -66,10 +68,27 @@ export default class HomePage extends Component {
     function success(pos) {
       var crd = pos.coords;
     
+      self.setState({
+        position: {
+          lat: crd.latitude,
+          lng: crd.longitude
+        }
+      })
+      
       console.log('Ваше текущее метоположение:');
       console.log(`Широта: ${crd.latitude}`);
       console.log(`Долгота: ${crd.longitude}`);
       console.log(`Плюс-минус ${crd.accuracy} метров.`);
+
+      fetch(`https://corsanywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${crd.latitude},${crd.longitude}&radius=${crd.accuracy}&key=AIzaSyBT3vf8DcFbanwdTPr6VM-41hXbr2oIsAU`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${data.results[1].photos[0].photo_reference}&key=AIzaSyBT3vf8DcFbanwdTPr6VM-41hXbr2oIsAU`);
+        self.setState({
+          photo_place: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${data.results[1].photos[0].photo_reference}&key=AIzaSyBT3vf8DcFbanwdTPr6VM-41hXbr2oIsAU`
+        })
+      })
+
     };
     
     function error(err) {
@@ -309,7 +328,7 @@ export default class HomePage extends Component {
             <CardHeader
               className="no-border"
               valign="bottom"
-              style={{ backgroundImage: 'url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)', height: "100px", color: "white" }}
+              style={{ backgroundImage: 'url(https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CmRaAAAAt71yApb-yYhmbkXXywrlXVOnv5XzcpUYhS5LGD1u-eGE-7ub8HH68CZ7TeEXbwt-K0cbaIr8Poi2ReMdCYYE54wMQmOMjIT-gZeEUW-dUb0cj2Bg4KgzElQl88tYYGMnEhClZ4vxuxiZB_L52-xX-T-YGhRn6_Ok75QyAK8qAVzYhWLQxG9A9w&key=AIzaSyBT3vf8DcFbanwdTPr6VM-41hXbr2oIsAU)', height: "300px", color: "white" }}
             >Journey To Mountains</CardHeader>
             <CardContent>
               <p className="date" style={{color: "grey"}}>Posted on January 21, 2015</p>
@@ -323,7 +342,7 @@ export default class HomePage extends Component {
             <CardHeader
               className="no-border"
               valign="bottom"
-              style={{ backgroundImage: 'url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)', height: "100px", color: "white" }}
+              style={{ backgroundImage: 'url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)', height: "300px", color: "white" }}
             >Journey To Mountains</CardHeader>
             <CardContent>
               <p className="date" style={{color: "grey"}}>Posted on January 21, 2015</p>
